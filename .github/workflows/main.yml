@@ -1,0 +1,57 @@
+name: Build packs
+
+on:
+  schedule:
+    - cron: "0 0 1 * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install pip packages
+        run: pip install -r requirements.txt
+
+      - name: Install Cargo
+        run: which cargo || sudo apt-get install -y cargo
+
+      - name: Set up Cargo cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install oxipng
+        run: which oxipng || cargo install oxipng
+
+      - name: Build packs
+        run: |
+          for builder in build_*.py; do
+            python3 $builder
+          done
+
+      - name: Get current date
+        run: echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Create release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.TOKEN }}"
+          prerelease: false
+          automatic_release_tag: "${{ env.CURRENT_DATE }}"
+          title: "Release ${{ env.CURRENT_DATE }}"
+          files: "*.iconpack"
