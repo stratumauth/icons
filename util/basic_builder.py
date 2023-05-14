@@ -37,7 +37,7 @@ def build_pack(settings: BasicBuildSettings, build_dir: str):
     pack = icon_pack_pb2.IconPack()
     pack.name = settings.pack_name
     pack.description = settings.pack_description
-    pack.url = settings.pack_description
+    pack.url = settings.pack_url
 
     add_png_files_to_pack(pack, build_dir)
     output_path = f"{settings.output_name}.iconpack"
