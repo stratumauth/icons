@@ -1,17 +1,20 @@
 import glob
+import shutil
 import tempfile
 from os import path
+from typing import Optional
 
 from util import icon_pack_pb2
 from util.git import clone_repo
-from util.image import render_svg_as_png, optimise_png
+from util.image import render_svg_as_png, optimise_png, resize_png
 from util.log import LOG
 from util.pack import add_png_files_to_pack
 
 
 class BasicBuildSettings:
     repo_url: str
-    svg_glob: list[str]
+    svg_glob: Optional[list[str]] = None
+    png_glob: Optional[list[str]] = None
     output_name: str
     pack_name: str
     pack_description: str
@@ -19,18 +22,28 @@ class BasicBuildSettings:
 
 
 def process_icons(settings: BasicBuildSettings, pack_dir: str, build_dir: str):
-    glob_path = path.join(pack_dir, *settings.svg_glob)
-    icons = glob.glob(glob_path)
+    if settings.svg_glob:
+        glob_path = path.join(pack_dir, *settings.svg_glob)
+        icons = glob.glob(glob_path)
 
-    for icon in icons:
-        base_name = path.basename(icon)
-        output_path = path.join(build_dir, base_name.replace("svg", "png"))
+        for icon in icons:
+            base_name = path.basename(icon)
+            output_path = path.join(build_dir, base_name.replace("svg", "png"))
 
-        with open(icon, "r") as file:
-            svg = file.read()
-            render_svg_as_png(svg, output_path)
+            with open(icon, "r") as file:
+                svg = file.read()
+                render_svg_as_png(svg, output_path)
 
-        optimise_png(output_path)
+            optimise_png(output_path)
+    elif settings.png_glob:
+        glob_path = path.join(pack_dir, *settings.png_glob)
+        icons = glob.glob(glob_path)
+
+        for icon in icons:
+            base_name = path.basename(icon)
+            output_path = path.join(build_dir, base_name)
+            resize_png(icon, output_path)
+            optimise_png(output_path)
 
 
 def build_pack(settings: BasicBuildSettings, build_dir: str):
@@ -52,10 +65,10 @@ def build_basic_pack(settings: BasicBuildSettings):
         clone_repo(settings.repo_url, pack_dir)
 
         with tempfile.TemporaryDirectory() as build_dir:
-            LOG.info("Converting icons to png")
+            LOG.info("Processing icons")
             process_icons(settings, pack_dir, build_dir)
 
             LOG.info("Building pack")
             build_pack(settings, build_dir)
 
-    LOG.info("Written to %s", settings.output_name)
+    LOG.info("Written to %s.iconpack", settings.output_name)

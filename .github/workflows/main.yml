@@ -38,6 +38,9 @@ jobs:
       - name: Install oxipng
         run: which oxipng || cargo install oxipng
 
+      - name: Install ImageMagick
+        run: sudo apt-get install -y imagemagick
+
       - name: Build packs
         run: |
           for builder in build_*.py; do
