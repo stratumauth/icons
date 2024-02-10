@@ -1,5 +1,4 @@
 import glob
-import shutil
 import tempfile
 from os import path
 from typing import Optional

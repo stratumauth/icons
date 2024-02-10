@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -25,7 +25,7 @@ jobs:
         run: which cargo || sudo apt-get install -y cargo
 
       - name: Set up Cargo cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/bin/
@@ -47,8 +47,15 @@ jobs:
             python3 $builder
           done
 
-      - name: Get current date
-        run: echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Rename packs
+        run: |
+          CURRENT_DATE=$(date +'%Y-%m-%d')
+          
+          for pack in *.iconpack; do
+            mv $pack $(echo $pack | sed "s|\.iconpack|-$CURRENT_DATE.iconpack|g")
+          done
+          
+          echo "CURRENT_DATE=$CURRENT_DATE" >> $GITHUB_ENV
 
       - name: Create release
         uses: "marvinpinto/action-automatic-releases@latest"
