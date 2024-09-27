@@ -1,8 +1,8 @@
 import os
 
-from util.icon_pack_pb2 import IconPack
-from util.log import LOG
-from util.text import slug
+from builder.icon_pack_pb2 import IconPack
+from builder.log import LOG
+from builder.text import slug
 
 
 def add_png_files_to_pack(pack: IconPack, build_dir: str):

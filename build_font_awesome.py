@@ -4,11 +4,11 @@ import glob
 import tempfile
 from os import path
 
-from util import icon_pack_pb2
-from util.git import clone_repo
-from util.image import render_svg_as_png, optimise_png, get_tinted_svg
-from util.log import LOG
-from util.pack import add_png_files_to_pack
+from builder import icon_pack_pb2
+from builder.git import clone_repo
+from builder.image import render_svg_as_png, optimise_png, get_tinted_svg
+from builder.log import LOG
+from builder.pack import add_png_files_to_pack
 
 REPO_URL = "https://github.com/FortAwesome/Font-Awesome.git"
 
