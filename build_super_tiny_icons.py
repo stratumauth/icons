@@ -10,7 +10,7 @@ def main():
     settings.output_name = "super-tiny-icons"
     settings.pack_name = "Super Tiny Icons"
     settings.pack_description = (
-        "Super Tiny Web Icons are minuscule SVG versions of your favourite logos"
+        "Super Tiny Web Icons are minuscule versions of your favourite logos"
     )
     settings.pack_url = "https://github.com/edent/SuperTinyIcons"
 

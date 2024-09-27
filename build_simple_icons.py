@@ -95,7 +95,7 @@ def process_icons_tinted(pack_dir: str, build_dir: str):
 def build_pack(build_dir: str, output_path: str, suffix: str):
     pack = icon_pack_pb2.IconPack()
     pack.name = f"Simple Icons ({suffix})"
-    pack.description = "SVG icons for popular brands"
+    pack.description = "Icons for popular brands"
     pack.url = "https://github.com/simple-icons/simple-icons"
 
     add_png_files_to_pack(pack, build_dir)
