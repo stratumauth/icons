@@ -2,7 +2,7 @@ import subprocess
 
 import cairosvg
 
-from util import ICON_SIZE
+from builder import ICON_SIZE
 
 
 def render_svg_as_png(source: str, dest: str):

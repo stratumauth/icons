@@ -4,11 +4,11 @@ import glob
 import tempfile
 from os import path
 
-from util import icon_pack_pb2
-from util.git import clone_repo
-from util.image import render_svg_as_png, optimise_png, get_tinted_svg
-from util.log import LOG
-from util.pack import add_png_files_to_pack
+from builder import icon_pack_pb2
+from builder.git import clone_repo
+from builder.image import render_svg_as_png, optimise_png, get_tinted_svg
+from builder.log import LOG
+from builder.pack import add_png_files_to_pack
 
 REPO_URL = "https://github.com/FortAwesome/Font-Awesome.git"
 
@@ -32,7 +32,7 @@ def process_icons(pack_dir: str, build_dir: str, colour: str):
 def build_pack(build_dir, output_path, suffix):
     pack = icon_pack_pb2.IconPack()
     pack.name = f"Font Awesome Brands ({suffix})"
-    pack.description = "The iconic SVG, font, and CSS toolkit"
+    pack.description = "Font Awesome is the Internet's icon library and toolkit, used by millions of designers, developers, and content creators."
     pack.url = "https://github.com/FortAwesome/Font-Awesome"
 
     add_png_files_to_pack(pack, build_dir)

@@ -3,11 +3,11 @@ import tempfile
 from os import path
 from typing import Optional
 
-from util import icon_pack_pb2
-from util.git import clone_repo
-from util.image import render_svg_as_png, optimise_png, resize_png
-from util.log import LOG
-from util.pack import add_png_files_to_pack
+from builder import icon_pack_pb2
+from builder.git import clone_repo
+from builder.image import render_svg_as_png, optimise_png, resize_png
+from builder.log import LOG
+from builder.pack import add_png_files_to_pack
 
 
 class BasicBuildSettings:

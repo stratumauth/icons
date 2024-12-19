@@ -44,21 +44,24 @@ jobs:
             python3 $builder
           done
 
-      - name: Rename packs
+      - name: Rename packs and create zip
         run: |
           CURRENT_DATE=$(date +'%Y-%m-%d')
+          echo "CURRENT_DATE=$CURRENT_DATE" >> $GITHUB_ENV
           
           for pack in *.iconpack; do
             mv $pack $(echo $pack | sed "s|\.iconpack|-$CURRENT_DATE.iconpack|g")
           done
           
-          echo "CURRENT_DATE=$CURRENT_DATE" >> $GITHUB_ENV
+          zip "_all-$CURRENT_DATE.zip" *.iconpack
 
       - name: Create release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: "${{ secrets.TOKEN }}"
-          prerelease: false
-          automatic_release_tag: "${{ env.CURRENT_DATE }}"
-          title: "Release ${{ env.CURRENT_DATE }}"
-          files: "*.iconpack"
+          name: "Release ${{ env.CURRENT_DATE }}"
+          tag_name: "${{ env.CURRENT_DATE }}"
+          files: |
+            *.iconpack
+            _all-${{ env.CURRENT_DATE }}.zip
+          token: "${{ secrets.TOKEN }}"
+          make_latest: true
