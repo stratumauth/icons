@@ -41,7 +41,7 @@ def get_icon_tints(pack_dir: str) -> dict[str, str]:
     with open(data_path, "r") as file:
         data = json.load(file)
 
-        for icon in data["icons"]:
+        for icon in data:
             title = icon["title"]
 
             if title in slugs:
