@@ -37,6 +37,9 @@ jobs:
 
       - name: Install oxipng
         run: which oxipng || cargo install oxipng
+        
+      - name: Install ImageMagick
+        run: sudo apt-get -y install imagemagick 
 
       - name: Build packs
         run: |
