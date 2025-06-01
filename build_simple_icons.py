@@ -35,7 +35,7 @@ def get_slugs(pack_dir: str) -> dict[str, str]:
 
 def get_icon_tints(pack_dir: str) -> dict[str, str]:
     slugs = get_slugs(pack_dir)
-    data_path = path.join(pack_dir, "_data", "simple-icons.json")
+    data_path = path.join(pack_dir, "data", "simple-icons.json")
     result = {}
 
     with open(data_path, "r") as file:
